@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code - AR Namecard Demo</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -45,11 +44,12 @@
 
         #qrcode {
             margin-bottom: 20px;
-            display: inline-block;
         }
 
         #qrcode img {
             border-radius: 8px;
+            width: 256px;
+            height: 256px;
         }
 
         .url {
@@ -58,6 +58,15 @@
             word-break: break-all;
             max-width: 300px;
             margin: 0 auto;
+        }
+
+        .url a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .url a:hover {
+            text-decoration: underline;
         }
 
         .instructions {
@@ -99,8 +108,14 @@
     <p class="subtitle">スマートフォンでスキャンしてください</p>
 
     <div class="qr-container">
-        <div id="qrcode"></div>
-        <p class="url" id="url"></p>
+        <div id="qrcode">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://nakiya777.github.io/ar-namecard-demo/" alt="QR Code">
+        </div>
+        <p class="url">
+            <a href="https://nakiya777.github.io/ar-namecard-demo/" target="_blank">
+                https://nakiya777.github.io/ar-namecard-demo/
+            </a>
+        </p>
     </div>
 
     <div class="instructions">
@@ -116,23 +131,5 @@
     <div class="note">
         ⚠️ AR機能はiOS (Safari) または Android (Chrome) で動作します
     </div>
-
-    <script>
-        // GitHub PagesのURL
-        const arPageUrl = 'https://nakiya777.github.io/ar-namecard-demo/';
-
-        // QRコード生成
-        new QRCode(document.getElementById('qrcode'), {
-            text: arPageUrl,
-            width: 256,
-            height: 256,
-            colorDark: '#333333',
-            colorLight: '#ffffff',
-            correctLevel: QRCode.CorrectLevel.H
-        });
-
-        // URL表示
-        document.getElementById('url').textContent = arPageUrl;
-    </script>
 </body>
 </html>
