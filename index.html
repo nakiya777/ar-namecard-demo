@@ -187,32 +187,35 @@
         // モデル切り替え関数
         function switchModel(modelKey) {
             const model = models[modelKey];
+            const container = document.querySelector('.viewer-container');
 
-            // 一度srcをクリアしてから再設定（強制リロード）
-            viewer.src = '';
+            // model-viewerを再生成して確実に切り替え
+            const iosSrcAttr = model.iosSrc ? `ios-src="${model.iosSrc}"` : '';
+            const scaleAttr = model.scale ? `scale="${model.scale}"` : '';
 
-            // 少し遅延を入れて確実に切り替え
-            setTimeout(() => {
-                // モデルのソースを設定
-                viewer.src = model.src;
+            container.innerHTML = `
+                <model-viewer
+                    id="viewer"
+                    src="${model.src}"
+                    ${iosSrcAttr}
+                    ${scaleAttr}
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    camera-controls
+                    touch-action="pan-y"
+                    auto-rotate
+                    shadow-intensity="1"
+                    exposure="1"
+                    alt="3Dモデル"
+                >
+                    <button slot="ar-button" class="ar-button" id="ar-btn">
+                        📱 ARで見る
+                    </button>
+                </model-viewer>
+            `;
 
-                // iOS用ソースを設定（あれば）
-                if (model.iosSrc) {
-                    viewer.setAttribute('ios-src', model.iosSrc);
-                } else {
-                    viewer.removeAttribute('ios-src');
-                }
-
-                // スケールを設定（あれば）
-                if (model.scale) {
-                    viewer.setAttribute('scale', model.scale);
-                } else {
-                    viewer.removeAttribute('scale');
-                }
-
-                // クレジットを更新
-                creditEl.innerHTML = model.credit;
-            }, 50);
+            // クレジットを更新
+            creditEl.innerHTML = model.credit;
 
             // ボタンのアクティブ状態を更新
             buttons.forEach(btn => {
