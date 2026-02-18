@@ -68,6 +68,7 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
         }
 
         model-viewer {
@@ -147,14 +148,14 @@
             exposure="1"
             alt="3Dモデル"
         >
-            <button slot="ar-button" class="ar-button">
+            <button slot="ar-button" class="ar-button" id="ar-btn">
                 📱 ARで見る
             </button>
         </model-viewer>
     </div>
 
     <p class="instructions">
-        📱 「View in AR」ボタンをタップして<br>
+        📱 「ARで見る」ボタンをタップして<br>
         お部屋に3Dモデルを配置できます
     </p>
 
@@ -187,25 +188,31 @@
         function switchModel(modelKey) {
             const model = models[modelKey];
 
-            // モデルのソースを設定
-            viewer.src = model.src;
+            // 一度srcをクリアしてから再設定（強制リロード）
+            viewer.src = '';
 
-            // iOS用ソースを設定（あれば）
-            if (model.iosSrc) {
-                viewer.setAttribute('ios-src', model.iosSrc);
-            } else {
-                viewer.removeAttribute('ios-src');
-            }
+            // 少し遅延を入れて確実に切り替え
+            setTimeout(() => {
+                // モデルのソースを設定
+                viewer.src = model.src;
 
-            // スケールを設定（あれば）
-            if (model.scale) {
-                viewer.setAttribute('scale', model.scale);
-            } else {
-                viewer.removeAttribute('scale');
-            }
+                // iOS用ソースを設定（あれば）
+                if (model.iosSrc) {
+                    viewer.setAttribute('ios-src', model.iosSrc);
+                } else {
+                    viewer.removeAttribute('ios-src');
+                }
 
-            // クレジットを更新
-            creditEl.innerHTML = model.credit;
+                // スケールを設定（あれば）
+                if (model.scale) {
+                    viewer.setAttribute('scale', model.scale);
+                } else {
+                    viewer.removeAttribute('scale');
+                }
+
+                // クレジットを更新
+                creditEl.innerHTML = model.credit;
+            }, 50);
 
             // ボタンのアクティブ状態を更新
             buttons.forEach(btn => {
@@ -218,6 +225,11 @@
             btn.addEventListener('click', () => {
                 switchModel(btn.dataset.model);
             });
+        });
+
+        // デバッグ: AR機能の状態を確認
+        viewer.addEventListener('ar-status', (event) => {
+            console.log('AR Status:', event.detail.status);
         });
     </script>
 </body>
