@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code - AR Namecard Demo</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -45,9 +45,10 @@
 
         #qrcode {
             margin-bottom: 20px;
+            display: inline-block;
         }
 
-        #qrcode canvas {
+        #qrcode img {
             border-radius: 8px;
         }
 
@@ -121,19 +122,13 @@
         const arPageUrl = 'https://nakiya777.github.io/ar-namecard-demo/';
 
         // QRコード生成
-        QRCode.toCanvas(document.createElement('canvas'), arPageUrl, {
+        new QRCode(document.getElementById('qrcode'), {
+            text: arPageUrl,
             width: 256,
-            margin: 2,
-            color: {
-                dark: '#333333',
-                light: '#ffffff'
-            }
-        }, function (error, canvas) {
-            if (error) {
-                console.error('QRコード生成エラー:', error);
-                return;
-            }
-            document.getElementById('qrcode').appendChild(canvas);
+            height: 256,
+            colorDark: '#333333',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
         });
 
         // URL表示
