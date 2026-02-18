@@ -31,6 +31,35 @@
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
+        .model-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .model-btn {
+            padding: 12px 20px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .model-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .model-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
         .viewer-container {
             width: 100%;
             max-width: 500px;
@@ -81,8 +110,14 @@
 <body>
     <h1>🏠 AR Namecard Demo</h1>
 
+    <div class="model-selector">
+        <button class="model-btn active" data-model="astronaut">🚀 宇宙飛行士</button>
+        <button class="model-btn" data-model="forest">🏡 Forest Loner</button>
+    </div>
+
     <div class="viewer-container">
         <model-viewer
+            id="viewer"
             src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
             ar
             ar-modes="webxr scene-viewer quick-look"
@@ -91,7 +126,7 @@
             auto-rotate
             shadow-intensity="1"
             exposure="1"
-            alt="Astronaut - テスト用モデル"
+            alt="3Dモデル"
         >
         </model-viewer>
     </div>
@@ -101,12 +136,67 @@
         お部屋に3Dモデルを配置できます
     </p>
 
-    <p class="credit">
-        3D Model:
-        <a href="https://sketchfab.com/3d-models/dae-diorama-forest-loner-fa62fc983cf743e38941576531eb1240" target="_blank" rel="noopener">
-            "DAE Diorama - Forest Loner"
-        </a>
-        (CC Attribution)
+    <p class="credit" id="credit">
+        3D Model: Google Model Viewer Sample
     </p>
+
+    <script>
+        // モデルデータの定義
+        const models = {
+            astronaut: {
+                src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
+                iosSrc: null,
+                scale: null,
+                credit: '3D Model: Google Model Viewer Sample'
+            },
+            forest: {
+                src: 'assets/model.gltf',
+                iosSrc: 'assets/DAE_Diorama_-_Forest_Loner.usdz',
+                scale: '0.3 0.3 0.3',
+                credit: '3D Model: <a href="https://sketchfab.com/3d-models/dae-diorama-forest-loner-fa62fc983cf743e38941576531eb1240" target="_blank" rel="noopener">"DAE Diorama - Forest Loner"</a> (CC Attribution)'
+            }
+        };
+
+        const viewer = document.getElementById('viewer');
+        const creditEl = document.getElementById('credit');
+        const buttons = document.querySelectorAll('.model-btn');
+
+        // モデル切り替え関数
+        function switchModel(modelKey) {
+            const model = models[modelKey];
+
+            // モデルのソースを設定
+            viewer.src = model.src;
+
+            // iOS用ソースを設定（あれば）
+            if (model.iosSrc) {
+                viewer.setAttribute('ios-src', model.iosSrc);
+            } else {
+                viewer.removeAttribute('ios-src');
+            }
+
+            // スケールを設定（あれば）
+            if (model.scale) {
+                viewer.setAttribute('scale', model.scale);
+            } else {
+                viewer.removeAttribute('scale');
+            }
+
+            // クレジットを更新
+            creditEl.innerHTML = model.credit;
+
+            // ボタンのアクティブ状態を更新
+            buttons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.model === modelKey);
+            });
+        }
+
+        // ボタンにイベントリスナーを追加
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchModel(btn.dataset.model);
+            });
+        });
+    </script>
 </body>
 </html>
