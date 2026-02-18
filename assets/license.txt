@@ -1,0 +1,11 @@
+Model Information:
+* title:	DAE Diorama - Forest Loner
+* source:	https://sketchfab.com/3d-models/dae-diorama-forest-loner-fa62fc983cf743e38941576531eb1240
+* author:	anton.willmann (https://sketchfab.com/anton.willmann)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "DAE Diorama - Forest Loner" (https://sketchfab.com/3d-models/dae-diorama-forest-loner-fa62fc983cf743e38941576531eb1240) by anton.willmann (https://sketchfab.com/anton.willmann) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
