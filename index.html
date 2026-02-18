@@ -76,13 +76,32 @@
             --poster-color: transparent;
         }
 
-        /* ARボタンのカスタマイズ */
-        model-viewer::part(default-ar-button) {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 12px 24px;
-            font-size: 1rem;
+        /* カスタムARボタン */
+        .ar-button {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 16px 32px;
+            font-size: 1.1rem;
             font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .ar-button:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 20px rgba(238, 90, 36, 0.5);
+        }
+
+        .ar-button:active {
+            transform: translateX(-50%) scale(0.98);
         }
 
         .instructions {
@@ -128,6 +147,9 @@
             exposure="1"
             alt="3Dモデル"
         >
+            <button slot="ar-button" class="ar-button">
+                📱 ARで見る
+            </button>
         </model-viewer>
     </div>
 
