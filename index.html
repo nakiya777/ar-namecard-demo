@@ -125,6 +125,28 @@
             color: white;
             text-decoration: underline;
         }
+
+        /* プレビューなし表示 */
+        .no-preview {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .no-preview-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        .no-preview-text {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -198,7 +220,7 @@
                 credit: '3D Model: DAE Diorama - Forest Loner (CC Attribution)'
             },
             hummingbird: {
-                src: 'https://developer.apple.com/augmented-reality/quick-look/models/hummingbird/hummingbird_anim.usdz',
+                src: null,
                 iosSrc: 'https://developer.apple.com/augmented-reality/quick-look/models/hummingbird/hummingbird_anim.usdz',
                 scale: '0.5 0.5 0.5',
                 autoplay: true,
@@ -215,32 +237,46 @@
             const model = models[modelKey];
             const container = document.querySelector('.viewer-container');
 
-            // model-viewerを再生成して確実に切り替え
-            const iosSrcAttr = model.iosSrc ? `ios-src="${model.iosSrc}"` : '';
-            const scaleAttr = model.scale ? `scale="${model.scale}"` : '';
-            const autoplayAttr = model.autoplay ? 'autoplay' : '';
+            // srcがnullの場合は「プレビューなし」を表示（iOS AR専用モデル）
+            if (!model.src) {
+                const iosSrcAttr = model.iosSrc ? `ios-src="${model.iosSrc}"` : '';
+                container.innerHTML = `
+                    <div class="no-preview">
+                        <div class="no-preview-icon">🐦</div>
+                        <div class="no-preview-text">Webプレビューなし</div>
+                        <a href="${model.iosSrc}" rel="ar">
+                            <button class="ar-button">📱 ARで見る (iOS)</button>
+                        </a>
+                    </div>
+                `;
+            } else {
+                // model-viewerを再生成して確実に切り替え
+                const iosSrcAttr = model.iosSrc ? `ios-src="${model.iosSrc}"` : '';
+                const scaleAttr = model.scale ? `scale="${model.scale}"` : '';
+                const autoplayAttr = model.autoplay ? 'autoplay' : '';
 
-            container.innerHTML = `
-                <model-viewer
-                    id="viewer"
-                    src="${model.src}"
-                    ${iosSrcAttr}
-                    ${scaleAttr}
-                    ${autoplayAttr}
-                    ar
-                    ar-modes="webxr scene-viewer quick-look"
-                    camera-controls
-                    touch-action="pan-y"
-                    auto-rotate
-                    shadow-intensity="1"
-                    exposure="1"
-                    alt="3Dモデル"
-                >
-                    <button slot="ar-button" class="ar-button" id="ar-btn">
-                        📱 ARで見る
-                    </button>
-                </model-viewer>
-            `;
+                container.innerHTML = `
+                    <model-viewer
+                        id="viewer"
+                        src="${model.src}"
+                        ${iosSrcAttr}
+                        ${scaleAttr}
+                        ${autoplayAttr}
+                        ar
+                        ar-modes="webxr scene-viewer quick-look"
+                        camera-controls
+                        touch-action="pan-y"
+                        auto-rotate
+                        shadow-intensity="1"
+                        exposure="1"
+                        alt="3Dモデル"
+                    >
+                        <button slot="ar-button" class="ar-button" id="ar-btn">
+                            📱 ARで見る
+                        </button>
+                    </model-viewer>
+                `;
+            }
 
             // クレジットを更新
             creditEl.innerHTML = model.credit;
