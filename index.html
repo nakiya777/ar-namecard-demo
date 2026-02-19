@@ -132,7 +132,9 @@
 
     <div class="model-selector">
         <button class="model-btn active" data-model="astronaut">🚀 宇宙飛行士</button>
-        <button class="model-btn" data-model="house">🏠 家 (iOS専用)</button>
+        <button class="model-btn" data-model="robot">🤖 ロボット</button>
+        <button class="model-btn" data-model="horse">🐴 馬</button>
+        <button class="model-btn" data-model="house">🏠 家</button>
     </div>
 
     <div class="viewer-container">
@@ -170,12 +172,28 @@
                 src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb',
                 iosSrc: null,
                 scale: null,
+                autoplay: false,
                 credit: '3D Model: Google Model Viewer Sample'
+            },
+            robot: {
+                src: 'https://modelviewer.dev/shared-assets/models/RobotExpressive.glb',
+                iosSrc: null,
+                scale: null,
+                autoplay: true,
+                credit: '3D Model: RobotExpressive (Google)'
+            },
+            horse: {
+                src: 'https://modelviewer.dev/shared-assets/models/Horse.glb',
+                iosSrc: null,
+                scale: null,
+                autoplay: true,
+                credit: '3D Model: Horse (Google)'
             },
             house: {
                 src: 'assets/dae_diorama_-_forest_loner.glb',
                 iosSrc: 'assets/model.usdz',
                 scale: '0.3 0.3 0.3',
+                autoplay: false,
                 credit: '3D Model: DAE Diorama - Forest Loner (CC Attribution)'
             }
         };
@@ -192,6 +210,7 @@
             // model-viewerを再生成して確実に切り替え
             const iosSrcAttr = model.iosSrc ? `ios-src="${model.iosSrc}"` : '';
             const scaleAttr = model.scale ? `scale="${model.scale}"` : '';
+            const autoplayAttr = model.autoplay ? 'autoplay' : '';
 
             container.innerHTML = `
                 <model-viewer
@@ -199,6 +218,7 @@
                     src="${model.src}"
                     ${iosSrcAttr}
                     ${scaleAttr}
+                    ${autoplayAttr}
                     ar
                     ar-modes="webxr scene-viewer quick-look"
                     camera-controls
